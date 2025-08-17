@@ -1,35 +1,39 @@
-  - name: app setup
-    include_role:
-      name: common
-      tasks_from: app-setup
-  
-  - name: app setup
-    include_role:
-      name: common
-      tasks_from: nodejs
+- name: app setup
+  include_role:
+    name: common
+    tasks_from: app-setup
 
-  - name: copy mongodb repo
-    ansible.builtin.copy:
-      src: mongo.repo
-      dest: /etc/yum.repos.d/mongo.repo
-  - name: install mongodb client
-    ansible.builtin.dnf:
-      name: mongodb-mongosh
-      state: present
+- name: nodejs setup
+  include_role:
+    name: common
+    tasks_from: nodejs
 
-  - name: checks the products loaded or not
-    ansible.builtin.command: mongosh --host mongodb.lakshmireddy.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
-    register: catalogue_output
+- name: copy mongodb repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
 
-  - name: print catalogue output
-    ansible.builtin.debug:
-      msg: "{{ catalogue_output }}"
+- name: install mongodb client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
 
-  - name: load products
-    ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site </app/db/master-data.js 
+- name: check products loaded or not
+  ansible.builtin.command: mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: catalogue_output
 
-    when: catalogue_output.stdout | int < 0
-  - name: systemd steup
-    include_role:
-      name: common
-      tasks_from: systemd.yaml
+
+- name: print catalogue output
+  ansible.builtin.debug:
+    msg: "{{ catalogue_output }}"
+
+
+- name: load products
+  ansible.builtin.shell: mongosh --host mongodb.daws84s.site < /app/db/master-data.js
+  when: catalogue_output.stdout | int < 0
+
+
+- name: systemd setup
+  include_role:
+    name: common
+    tasks_from: systemd.yaml
