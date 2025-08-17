@@ -29,8 +29,9 @@
 
 
 - name: load products
-  ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site < /app/db/master-data.js
-  when: catalogue_output.stdout | int < 0
+  ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site < /app/catalogue/db/master-data.js
+  when: (catalogue_output.stdout | regex_search('-?[0-9]+') | int) < 0
+
 
 
 - name: systemd setup
