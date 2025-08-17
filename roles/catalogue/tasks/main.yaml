@@ -29,7 +29,7 @@
     ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site </app/db/master-data.js 
 
     when: catalogue_output.stdout | int < 0
-  - name: app setup
+  - name: systemd steup
     include_role:
       name: common
       tasks_from: systemd
