@@ -37,5 +37,21 @@ common ---> task ---app-setup.yaml ---> It contain common code
 this is node js application so we can keep node js in nodejs.yaml file
 we can place the repo file under catalogue ----> files ---> mongo.repo
 
+Template:
+=========
+we can keep some place holders we can put some values at runtime
+
+file:
+=====
+content inside the specfic file
+
+Ansible templates:
+==================
+follows jinja2 formatting we can keep some placeholders, actual values will be provided throught variabkes at run time
+
+we will change the service file MONGODB_HOST
+for we have catalogue-service.j2 
+and for giving values we have vars ---> main.tf
+
 
 
