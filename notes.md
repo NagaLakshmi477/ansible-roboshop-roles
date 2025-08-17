@@ -27,3 +27,15 @@ here we can dynamically give the component names in main.yaml file
 command:
 ansible-playbook -i inventory.ini -e component=mongodb main.yaml
 
+Catalogue:
+=============
+
+Here we have created catalogue floder under roles
+catalogue---> task ---> main.yaml 
+Here we can call another role in the main.yaml file
+common ---> task ---app-setup.yaml ---> It contain common code
+this is node js application so we can keep node js in nodejs.yaml file
+
+
+
+
