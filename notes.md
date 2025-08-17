@@ -54,4 +54,14 @@ for we have catalogue-service.j2
 and for giving values we have vars ---> main.tf
 
 
+tasks
+    main.yaml ---> playbook related task are here
+files
+    <file-name> ---> you can keep all the files required here
+templates
+    <template-file> ----> we can keep the all templates with placehloders here. usually we fallow jinja2 templating variable values can be suppiled
+vars
+    main.yaml ---> all variables required for the roles can be kept here
+
+
 
