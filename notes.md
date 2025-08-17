@@ -35,7 +35,7 @@ catalogue---> task ---> main.yaml
 Here we can call another role in the main.yaml file
 common ---> task ---app-setup.yaml ---> It contain common code
 this is node js application so we can keep node js in nodejs.yaml file
-
+we can place the repo file under catalogue ----> files ---> mongo.repo
 
 
 
