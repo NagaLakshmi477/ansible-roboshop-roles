@@ -1,14 +1,5 @@
 
-- name: disable default version
-  ansible.builtin.command: dnf module disable nodejs -y
 
-- name: enable nodejs 20 version
-  ansible.builtin.command: dnf module enable nodejs:20 -y
-
-- name: install nodejs
-  ansible.builtin.dnf:
-    name: nodejs
-    state: present
 
 - name: create roboshop user
   ansible.builtin.user:
