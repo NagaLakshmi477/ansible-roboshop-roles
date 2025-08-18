@@ -1,12 +1,31 @@
 - name: app setup
-  import_role:
+  include_role:
     name: common
     tasks_from: app-setup
 
-- name: nodejs setup
-  import_role:
-    name: common
-    tasks_from: nodejs
+- name: disable default version
+  ansible.builtin.command: dnf module disable nodejs -y
+
+- name: enable nodejs 20 version
+  ansible.builtin.command: dnf module enable nodejs:20 -y
+
+- name: install nodejs
+  ansible.builtin.dnf:
+    name: nodejs
+    state: present
+
+- name: create roboshop user
+  ansible.builtin.user:
+    name: roboshop
+    shell: /sbin/nologin
+    system: true
+    home: /app
+
+
+
+- name: install dependies
+  community.general.npm:
+    path: /app
 
 - name: copy mongodb repo
   ansible.builtin.copy:
