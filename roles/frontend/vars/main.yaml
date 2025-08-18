@@ -1,1 +1,5 @@
 CATALOGUE_HOST: catalogue.lakshmireddy.site
+USER_HOST: user.lakshmireddy.site
+CART_HOST: cart.lakshmireddy.site
+SHIPPING_HOST: shipping.lakshmireddy.site
+PAYMENT_HOST: payment.lakshmireddy.site
