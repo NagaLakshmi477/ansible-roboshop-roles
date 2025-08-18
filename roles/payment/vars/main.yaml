@@ -1,0 +1,3 @@
+CART_HOST: cart.lakshmireddy.site
+USER_HOST: user.lakshmireddy.site
+RABBITMQ_HOST: rabbitmq.lakshmireddy.site
