@@ -74,3 +74,38 @@ Handlers:
 ----------
 handlers are the notifiers in ansible. when there is a change in something if you want to notify other task we can use handlers
 
+Ansible tags:
+================
+deployment or new version is released 
+
+we will announce down time for 6 hrs
+------------------------------------
+ex: catalogue
+
+stop catalogue service
+remove old code
+download new code
+restart catalogue
+
+common ---> tasks ---> deployment.yaml
+
+we can include other roles using include_role or import_role
+
+include_role: it will include the tasks in run time it will validate also runtime.
+it will not pre processed
+import_role: ansible validates import role before playbook executes
+
+Ansible error handling:
+=======================
+in shell:
+---------
+id robsohop:
+        if created already we are skipping
+        otherwise we will create
+
+imagine there is no user module is available
+
+a task executes id roboshop ---> tasks fails if user is not available ---> usually scrpit exit beacuse of this error --> but we already know this will exit so we need to handle this one
+another task create user, if rc != 0
+
+ ignore_errors: true ---> this is we will use

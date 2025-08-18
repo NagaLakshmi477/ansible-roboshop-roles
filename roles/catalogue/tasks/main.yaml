@@ -54,27 +54,34 @@
     name: mongodb-mongosh
     state: present
 
-# - name: load the products data
-#   community.mongodb.mongodb_shard:
-#     file: "/app/db/master-data.js" 
-#     idempotent: yes
-#     login_host: mongodb.lakshmireddy.site
-
 - name: checks the products loaded or not if loaded nio need of above one
   ansible.builtin.command: mongosh --host mongodb.lakshmireddy.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
+  # ignore_errors: true
 
 - name: print catalogue output
   ansible.builtin.debug:
     msg: "{{ catalogue_output }}"
-# # here we got stdout is -1 means catalogue is not created
+  # ignore_errors: true
+  # ignore_unreachable: true
+
 
 - name: load products
   ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site </app/db/master-data.js 
   #when: catalogue_output.stdout < 0
   when: catalogue_output.stdout | int < 0
-# # it is taking like a string so we need to convert string to int
-# # now we will 1
+  # ignore_errors: true
+  # ignore_unreachable: true
 
-# # now check with reamining commans in bash
+- name: systemd setup
+  include_role:
+    name: common
+    tasks_from: systemd.yaml
+
+- name: app setup
+  tags:
+  - deployment
+  import_role:
+    name: common
+    tasks_from: deployment.yaml
 
