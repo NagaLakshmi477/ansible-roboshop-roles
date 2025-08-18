@@ -1,27 +1,25 @@
 - name: app setup
   include_role:
     name: common
-    tasks_from: app-setup
+    tasks_from: app-setup.yaml
 
 - name: nodejs setup
   include_role:
     name: common
-    tasks_from: nodejs
+    tasks_from: app-nodejs.yaml
 
 - name: copy mongodb repo
   ansible.builtin.copy:
     src: mongo.repo
     dest: /etc/yum.repos.d/mongo.repo
-
 - name: install mongodb client
   ansible.builtin.dnf:
     name: mongodb-mongosh
     state: present
 
-- name: check products loaded or not
+- name: checks the products loaded or not if loaded nio need of above one
   ansible.builtin.command: mongosh --host mongodb.lakshmireddy.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
-
 
 - name: print catalogue output
   ansible.builtin.debug:
@@ -29,10 +27,8 @@
 
 
 - name: load products
-  ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site < /app/catalogue/db/master-data.js
-  when: (catalogue_output.stdout | regex_search('-?[0-9]+') | int) < 0
-
-
+  ansible.builtin.shell: mongosh --host mongodb.lakshmireddy.site </app/db/master-data.js 
+  when: catalogue_output.stdout | int < 0
 
 - name: systemd setup
   include_role:
