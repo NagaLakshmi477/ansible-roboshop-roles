@@ -68,6 +68,7 @@ Frontend:
 =========
 Here we need to restart the application ---> if any changes in configuration file
 for this we have handlers
+by deafault it is main.yaml
 
 Handlers:
 ----------
