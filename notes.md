@@ -64,4 +64,12 @@ vars
     main.yaml ---> all variables required for the roles can be kept here
 
 
+Frontend:
+=========
+Here we need to restart the application ---> if any changes in configuration file
+for this we have handlers
+
+Handlers:
+----------
+handlers are the notifiers in ansible. when there is a change in something if you want to notify other task we can use handlers
 
