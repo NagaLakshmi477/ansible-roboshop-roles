@@ -97,6 +97,10 @@ import_role: ansible validates import role before playbook executes
 
 Ansible error handling:
 =======================
+Error handling means what should we do when errors comes what we should do when error is not comes
+
+if we are able to handle the error we can keep ignore_error: true and then execute another task in case of failures
+
 in shell:
 ---------
 id robsohop:
@@ -109,3 +113,34 @@ a task executes id roboshop ---> tasks fails if user is not available ---> usual
 another task create user, if rc != 0
 
  ignore_errors: true ---> this is we will use
+
+
+ Vault:
+ =======
+you can create file and encrpt it
+
+ to create ansible vault ----> ansible-vault create test.yaml
+ to view the password ----> ansible-vault view test.yaml
+ to edit the password -----> ansible-vault edit test.yaml
+
+ vauts are not recommenede to push into github
+ we need to create .gitignore file under the vault floder
+
+ After pulling the latest we will not get the vault floder
+ so we need to create the vault in server
+
+ mkdir vault
+ cd vault
+ ansible-vault create mysql.yaml
+
+ MYSQL_ROOT_PASSWORD: RoboShop@1
+ 
+ SSM parameter store
+ -------------------
+ linux ---> server
+ Ansible ---> platform
+
+ Hashicrop ---> install, manage, upgrade, update 
+ linux/ansible integrate with vault software
+
+ AWS ---> SSM parametr ---> parameter store ---> create parameter ---> need to start with / ---->/roboshop/mysql/mysql_root_password ---> secure string --> RoboShop@1
