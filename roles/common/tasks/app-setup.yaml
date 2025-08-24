@@ -9,14 +9,14 @@
     shell: /sbin/nologin
     system: true
     home: /app
-  
-- name: "download the {{ component }} code"
+    
+- name: download the catalogue code
   ansible.builtin.get_url:
-    url: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip"
-    dest: "/tmp/{{ component }}.zip"
+    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+    dest: /tmp/catalogue.zip
 
-- name: "extract the  {{ component }} files"
+- name: extract the  catalogue files 
   ansible.builtin.unarchive:
-    src: "/tmp/{{ component }}.zip"
+    src: /tmp/catalogue.zip
     dest: /app
     remote_src: yes

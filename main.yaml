@@ -1,5 +1,7 @@
 - name: configure {{ component }} component
   become: yes
   hosts: "{{ component }}"
+  #hosts: local
+  #connection: local
   roles: # this will automatically load the floder called roles in current working directory
   - "{{ component }}"
