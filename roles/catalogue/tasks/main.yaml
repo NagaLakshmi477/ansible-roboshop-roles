@@ -5,7 +5,7 @@
 
     
 - name: installtion setup
-  include_roles:
+  include_role:
     name: common
     tasks_from: nodejs.yaml
 
@@ -35,7 +35,7 @@
   when: catalogue_output.stdout | int < 0
 
 - name: systemd setup
-  include_roles:
+  include_role:
     name: common
     tasks_from: systemd.yaml
 
