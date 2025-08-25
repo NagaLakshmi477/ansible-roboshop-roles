@@ -91,9 +91,14 @@ common ---> tasks ---> deployment.yaml
 
 we can include other roles using include_role or import_role
 
-include_role: it will include the tasks in run time it will validate also runtime.
+include_role:
+------------
+ it will include the tasks in run time it will validate also runtime.
 it will not pre processed
-import_role: ansible validates import role before playbook executes
+import_role: 
+------------
+ansible validates import role before playbook execution.
+Tags and when conditions are apply to the imposrted role and tasks
 
 Ansible error handling:
 =======================
@@ -117,14 +122,19 @@ another task create user, if rc != 0
 
  Vault:
  =======
-you can create file and encrpt it
+ password mangement is poor in ansible
+you can create file and encrypt it
 
  to create ansible vault ----> ansible-vault create test.yaml
  to view the password ----> ansible-vault view test.yaml
  to edit the password -----> ansible-vault edit test.yaml
 
+now we will create a vault floder
+
  vauts are not recommenede to push into github
  we need to create .gitignore file under the vault floder
+
+we need to maintain the passwords in server
 
  After pulling the latest we will not get the vault floder
  so we need to create the vault in server

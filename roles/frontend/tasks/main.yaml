@@ -1,50 +1,34 @@
-- name: disable nginx 
-  ansible.builtin.command: dnf module disable nginx -y
+- name: configure redis database
+  hosts: redis
+  become: yes
+  tasks:
+  - name: disable default version
+    ansible.builtin.command: dnf module disable redis -y
 
-- name: enable nginx:1.24
-  ansible.builtin.command: dnf module enable nginx:1.24 -y
+  - name: enable redis:7 version
+    ansible.builtin.command: dnf module enable redis:7 -y
 
-- name: install nginx
-  ansible.builtin.dnf:
-    name: nginx 
-    state: present
+  - name: install redis
+    ansible.builtin.dnf:
+      name: redis 
+      state: present
 
-- name: start and enable nginx
-  ansible.builtin.service:
-    name: nginx
-    state: started
-    enabled: yes
+  - name: allow remote connections
+    ansible.builtin.replace:
+      path: /etc/redis/redis.conf
+      regexp: '127.0.0.1'
+      replace: '0.0.0.0'
 
-- name: remove html directory
-  ansible.builtin.file:
-    path: /usr/share/nginx/html/
-    state: absent
+  - name: replace protectmode to no
+    ansible.builtin.lineinfile:
+      path: /etc/redis/redis.conf
+      regexp: 'protected-mode'
+      line: protected-mode no
 
-- name: create html directory
-  ansible.builtin.file:
-    path: /usr/share/nginx/html/
-    state: directory
+  - name: enable and start redis
+    ansible.builtin.service:
+      name: redis
+      state: started
+      enabled: yes
 
-- name: download the frontend code
-  ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
-    dest: /tmp/frontend.zip
-    remote_src: yes
-
-- name: unzip frontend code
-  ansible.builtin.unarchive:
-    src: /tmp/frontend.zip
-    dest: /usr/share/nginx/html/
-
-- name: remove default nginx content
-  ansible.builtin.file:
-    path: /etc/nginx/nginx.conf
-    state: absent
-
-- name: copy roboshop nginx config
-  ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-  notify:
-    - Restart nginx
-
+  

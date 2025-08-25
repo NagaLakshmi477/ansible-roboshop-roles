@@ -3,12 +3,41 @@
     name: common
     tasks_from: app-setup
 
-- name: maven setup
-  include_role:
-    name: common
-    tasks_from: maven
+- name: create app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
 
-- name: systemd setup
-  include_role:
-    name: common
-    tasks_from: systemd
+- name: create roboshop system user
+  ansible.builtin.user:
+    name: roboshop
+    shell: /sbin/nologin
+    system: true
+    home: /app
+
+- name: download payment code
+  ansible.builtin.get_url:
+    url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
+    dest: /tmp/payment.zip
+
+- name: extract payment code
+  ansible.builtin.unarchive:
+    src: /tmp/payment.zip
+    dest: /app
+    remote_src: yes
+
+- name: copy payment service
+  ansible.builtin.copy:
+    src: payment.service
+    dest: /etc/systemd/system/payment.service
+    remote_src: yes
+
+- name: daemon reload
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: enable and start payment
+  ansible.builtin.service:
+    name: payment
+    state: started
+    enabled: yes
