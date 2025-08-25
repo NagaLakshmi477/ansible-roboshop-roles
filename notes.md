@@ -136,7 +136,7 @@ now we will create a vault floder
 
 we need to maintain the passwords in server
 
- After pulling the latest we will not get the vault floder
+ After pulling the latest we will not get the vault floder (we used .gitignore)
  so we need to create the vault in server
 
  mkdir vault
