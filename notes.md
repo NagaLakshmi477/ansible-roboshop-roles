@@ -95,6 +95,7 @@ include_role:
 ------------
  it will include the tasks in run time it will validate also runtime.
 it will not pre processed
+
 import_role: 
 ------------
 ansible validates import role before playbook execution.
@@ -104,7 +105,8 @@ Ansible error handling:
 =======================
 Error handling means what should we do when errors comes what we should do when error is not comes
 
-if we are able to handle the error we can keep ignore_error: true and then execute another task in case of failures
+if we are able to handle the error we can keep ignore_error: true
+and then execute another task in case of failures
 
 in shell:
 ---------
@@ -145,7 +147,7 @@ we need to maintain the passwords in server
 
  MYSQL_ROOT_PASSWORD: RoboShop@1
  
- SSM parameter store
+ SSM parameter store (ssm)
  -------------------
  linux ---> server
  Ansible ---> platform
@@ -154,3 +156,144 @@ we need to maintain the passwords in server
  linux/ansible integrate with vault software
 
  AWS ---> SSM parametr ---> parameter store ---> create parameter ---> need to start with / ---->/roboshop/mysql/mysql_root_password ---> secure string --> RoboShop@1
+
+ How to connect aws cli:
+ ------------------------
+ ansible is developed using python.
+ we need to install some packages to connect aws (boto3 and boto core)
+ Autonications is also required
+
+ we are using ansible vault but there are few challanges to maintain the passwords and files.
+ I recently propsed SSM parameter store I did POC i removed vault and implatemented ssm parameter sucessfully
+
+
+
+ Ansible-dynamic Inventory:
+ ------------------------
+ Till now we used sttatuc inventory file  ---> IP address and hosts are fixed
+
+Auto scaling: ----> when tarffic increse infra also increse when traffic descrese infra alos decrease
+ansible queries the ec2 instances based on some critiria.
+
+now ansible needs to connect with ec2:
+--------------------------------------
+we need to install boto3 and botocore
+
+filter:
+us-east-1
+running instances
+name ---> frontend
+
+file name should be ---> *.aws_ec2.yaml/yml 
+plugin: adding extra functionlity to our code . it came from installltions(boto)
+
+how ansible parallely connects to the ec2 instance:
+
+craete a file in ansible repo 
+how to execute the file:
+
+ansible-inventory -i inventory.aws_ec2.yaml --graph
+--------------------------------------------------
+using forks ---> how many number of instances ansible can connect
+
+
+[ ec2-user@ip-172-31-32-218 ~/ansible ]$ ansible --version
+ansible [core 2.14.18]
+  config file = /home/ec2-user/ansible/ansible.cfg
+  configured module search path = ['/home/ec2-user/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.9/site-packages/ansible
+  ansible collection location = /home/ec2-user/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible
+  python version = 3.9.18 (main, Jan  4 2024, 00:00:00) [GCC 11.4.1 20230605 (Red Hat 11.4.1-2)] (/usr/bin/python3)
+  jinja version = 3.1.2
+  libyaml = True
+
+we will create
+--------------
+cd ..
+mkdir config
+cd config
+cd ..
+
+cp /etc/ansible/ansible.cfg config
+now we will check ansible version
+
+Here i don't want to load the deafulaty configuration 
+i want to load the ansible configuration
+for this i want to create environementy variables
+
+# export ANSIBLE_CONFIG=/home/ec2-user/config/ansible.cfg
+now check the version
+ansible --version
+
+ config file = /home/ec2-user/config/ansible.cfg
+
+unset ANSIBLE_CONFIG
+ansible --version
+ config file = /etc/ansible/ansible.cfg
+
+- It will check is any user create that .cfg file ---> 1st 
+ANSIBLE_CONFIG ---> 1st preference
+
+# now i will create file in ansible floder 
+ansible.cfg ----> in the current directory
+cd ansible
+ansible --version
+
+config file = /home/ec2-user/ansible/ansible.cfg
+
+# 3rd ~/.ansible.cfg ---> in the home directory
+pwd
+/home/ec2-user
+cp /etc/ansible/ansible.cfg .ansible.cfg
+ansible --version 
+  config file = /home/ec2-user/.ansible.cfg
+
+
+
+/etc/ansible/ansible.cfg ----> last prefernce
+ANSIBLE_CONFIG=/home/ec2-user/config/ansible.cfg
+export ANSIBLE_CONFIG=/home/ec2-user/config/ansible.cfg
+ansible --version
+
+ansible-serial
+------------
+ex: we will take serial is 4 
+so playbook run the play for every 4 instances(onetime) again 8th server like this
+
+ansible can query the cloud provider to fetch hosts at run time this will useful in the autoscaling kind of dyanamic envi
+
+aws can create aws infra
+---------------------
+ansible is very poor in state management
+for ansible everything is module if module is available it can create anything. Ansible may require libraries . to connect we need boto3 and botocore. aws configuration too
+
+we will create
+1. aws instances
+2. route 53 records
+
+
+keybased instances:
+------------------
+we need to create a key and login ec2 ---normal (not rhel) -> using key
+login to
+$ ssh -i ramesh ec2-user@18.232.106.12
+
+here we are able to connect using ssh means we can able to connect to ansible also beacuse it is also working using ssh
+means we need keys for ansible also and we need to store keys in server
+login into ansible
+mkdir keys
+cd keys
+vim <key-file.pem>
+
+cop ---> public key (bash) --- paste ---> keys.pem ---> save
+
+the max permissions are 600 
+chmod 600 <file>
+ ssh -i ramesh.pem ec2-user@172.31.38.203(private-ip)
+
+ now we able to connect so we can mention the pem file location in nventory file
+we can one file like keys.yaml 
+
+
+ 
