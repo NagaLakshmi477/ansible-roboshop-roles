@@ -1,7 +1,7 @@
 # no need to write separate file we can parametraise the all componnets
-- name: configur {{ component }} component
+- name: configur "{{ component }}" component
   become: yes
-  hosts: {{ component }}
+  hosts: "{{ component }}"
   roles: # this automatically load
   - {{ component }}
 
