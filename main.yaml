@@ -1,8 +1,11 @@
 # no need to write separate file we can parametraise the all componnets
-- name: configur "{{ component }}" component
+- name: configure "{{ component }}" component
   become: yes
   hosts: "{{ component }}"
   roles: # this automatically load
-  - {{ component }}
+  - "{{ component }}"
 
-  # 
+
+  # ansible-playbook -i inventory.ini -e component=mongodb main.yaml
+
+
