@@ -1,56 +1,16 @@
-  - name: disable previous version for nodejs
-    ansible.builtin.command: dnf module disable nodejs -y
-  
-  - name: enable nodejs version
-    ansible.builtin.command: dnf module enable nodejs:20 -y
+ # here we need to import the common tasks from common floder
+  - name: app setup
+    include_role:
+      name: common
+      tasks_from: app-setup
+ 
 
-  - name: installing nodejs
-    ansible.builtin.dnf:
-      name: nodejs
-      state: present
+  - name: node js setup
+    include_role:
+      name: common
+      tasks_from: nodejs
 
-  - name: create roboshop user
-    ansible.builtin.user:
-      name: roboshop
-      shell: /sbin/nologin
-      system: true
-      home: /app
-  
-  - name: create app directory
-    ansible.builtin.file:
-      path: /app
-      state: directory
-
-  - name: download the files from path 
-    ansible.builtin.get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-      dest: /tmp/catalogue.zip
-  
-  - name: unzip the catalogue floder
-    ansible.builtin.unarchive:
-      src: /tmp/catalogue.zip
-      dest: /app
-      remote_src: true
-
-  - name: installing dependies 
-    community.general.npm:
-      path: /app
-
-  - name: copy the catalogue service files
-    ansible.builtin.copy:
-      src: catalogue.service
-      dest: /etc/systemd/system/catalogue.service
-
-  - name: reload the catalogue service
-    ansible.builtin.systemd_service:
-      daemon_reload: true
-      
-  - name: start and enable the service
-    ansible.builtin.service:
-      name: catalogue
-      state: started
-      enabled: yes 
-  
+# from this tasks this not common so we can keep here
   - name: copy mongodb repo
     ansible.builtin.copy:
       src: mongo.repo
@@ -72,4 +32,9 @@
   - name: load the products
     ansible.builtin.command: mongosh --host mongodb.nagalakshmi.site < /app/db/master-data.js
     when: catalogue_output.stdout | int < 0
+  
+  - name: system service
+    include_role:
+      name: common
+      tasks_from: systemd
   
