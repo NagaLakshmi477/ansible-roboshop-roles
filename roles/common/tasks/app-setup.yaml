@@ -11,13 +11,13 @@
       path: /app
       state: directory
 
-  - name: download the files from path 
+  - name: download the {{ component }} files from path 
     ansible.builtin.get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-      dest: /tmp/catalogue.zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
+      dest: /tmp/{{ component }} .zip
   
-  - name: unzip the catalogue floder
+  - name: unzip the {{ component }} floder
     ansible.builtin.unarchive:
-      src: /tmp/catalogue.zip
+      src: /tmp/{{ component }} .zip
       dest: /app
       remote_src: true

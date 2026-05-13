@@ -1,0 +1,17 @@
+ # here we need to import the common tasks from common floder
+  - name: app setup
+    include_role:
+      name: common
+      tasks_from: app-setup
+ 
+
+  - name: node js setup
+    include_role:
+      name: common
+      tasks_from: nodejs
+  
+  - name: system service
+    include_role:
+      name: common
+      tasks_from: systemd
+  

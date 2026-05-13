@@ -1,15 +1,15 @@
-  - name: copy the catalogue service files
+  - name: copy the {{ component}} service files
     ansible.builtin.template:
-      src: catalogue.service.j2
-      dest: /etc/systemd/system/catalogue.service
+      src: "{{ component}}.service.j2"
+      dest: "/etc/systemd/system/{{ component}}.service"
 
-  - name: reload the catalogue service
+  - name: reload the {{ component}} service
     ansible.builtin.systemd_service:
       daemon_reload: true
       
-  - name: start and enable the service
+  - name: start and enable the  {{ component}} service
     ansible.builtin.service:
-      name: catalogue
+      name: "{{ component}}"
       state: restarted # even app is not running we can restat
       enabled: yes 
   
