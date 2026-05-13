@@ -1,0 +1,5 @@
+- name: configur mongodb component
+  become: yes
+  hosts: mongodb
+  roles: # this automatically load
+  - mongodb
