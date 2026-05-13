@@ -1,0 +1,27 @@
+  - name: app setup
+    included_roles:
+      name: common
+      tasks_from: app-setup
+  
+  - name: maven setup
+    included_roles:
+      name: common
+      tasks_from: maven
+
+  - name: import the data
+    community.mysql.mysql_db:
+      login_user: root 
+      login_password: RoboShop@1
+      login_host: mysql.nagalakshmi.site
+      state: import
+      target: "{{ item }}"
+    loop:
+        - /app/db/schema.sql
+        - /app/db/app-user.sql 
+        - /app/db/master-data.sql
+  - name: system setup
+    included_roles:
+      name: common
+      tasks_from: systemd
+
+
