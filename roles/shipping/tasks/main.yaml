@@ -11,6 +11,7 @@
   - name: import the data
     community.mysql.mysql_db:
       login_user: root 
+      name: all
       login_password: RoboShop@1
       login_host: mysql.nagalakshmi.site
       state: import
