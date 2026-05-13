@@ -1,10 +1,10 @@
   - name: app setup
-    include_roles:
+    include_role:
       name: common
       tasks_from: app-setup
   
   - name: maven setup
-    include_roles:
+    include_role:
       name: common
       tasks_from: maven
 
@@ -20,7 +20,7 @@
         - /app/db/app-user.sql 
         - /app/db/master-data.sql
   - name: system setup
-    include_roles:
+    include_role:
       name: common
       tasks_from: systemd
 
