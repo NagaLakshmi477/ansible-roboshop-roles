@@ -40,6 +40,8 @@
       name: common
       tasks_from: systemd
 # it validate during runtime errors also come during the task execution
+# tags are not apply here 
+# 
   # - name: deployment setup
   #   tags: 
   #   - deployment
