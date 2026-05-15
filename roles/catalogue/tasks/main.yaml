@@ -32,6 +32,8 @@
   - name: load the products
     ansible.builtin.command: mongosh --host mongodb.nagalakshmi.site < /app/db/master-data.js
     when: catalogue_output.stdout | int < 0
+    # this is exmple for error handling we want skip anything if we know this wil give any_errors_fatal
+    ignore_errors: true
   
   - name: system service
     include_role:
