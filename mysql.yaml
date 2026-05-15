@@ -2,7 +2,7 @@
 - name: configure {{ component }} component
   become: yes
   hosts: "{{ component }}"
-  vars_files:
-  - vault/mysql.yaml
+  # vars_files:
+  # - vault/mysql.yaml
   roles: # this automatically load
   - "{{ component }}"
