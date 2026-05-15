@@ -124,7 +124,7 @@ another task create user, if rc != 0
 
  Vault:
  =======
- password mangement is poor in ansible
+password mangement is poor in ansible
 you can create file and encrypt it
 
  to create ansible vault ----> ansible-vault create test.yaml
