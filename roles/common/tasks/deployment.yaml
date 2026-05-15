@@ -1,0 +1,31 @@
+# here we will use yags
+# 
+- name: stop the services
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: stopped
+
+- name: remove /app directory
+  ansible.builtin.file:
+    path: /app
+    state: absent
+
+- name: create /app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name:  download and unzip the application
+  anisble.builtin.unarchive:
+    src: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v{{ app_version }}.zip"
+    dest: /app
+    remote_src: yes
+
+- name: install dependies
+  community.general.npm:
+    path: /app
+  
+- name:  restart the component
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: restarted
