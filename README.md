@@ -147,6 +147,11 @@ we need to maintain the passwords in server
 
  MYSQL_ROOT_PASSWORD: RoboShop@1
  
+ run:
+ [ ec2-user@ip-172-31-28-125 ~/ansible-roboshop-roles/vault ]$ ansible-playbook -i inventory mysql.yaml -e "component=mysql"
+[WARNING]: Unable to parse /home/ec2-user/ansible-roboshop-roles/vault/inventory as an inventory source
+
+
  SSM parameter store (ssm)
  -------------------
  linux ---> server

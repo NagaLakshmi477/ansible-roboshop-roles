@@ -2,11 +2,7 @@
 - name: configure {{ component }} component
   become: yes
   hosts: "{{ component }}"
-
+  vars_files:
+  - vault/mysql.yaml
   roles: # this automatically load
   - "{{ component }}"
-
-
-  # ansible-playbook -i inventory.ini -e component=mongodb main.yaml
-
-
